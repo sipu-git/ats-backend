@@ -1,15 +1,18 @@
 import { connectDB } from "../configs/db.config";
 import { CounterModel } from "../models/counter.model";
-import RawDataModel from "../models/data.model";
+import RawDataModel, { type EducationItem, type ExperienceItem } from "../models/data.model";
 
+function generateDocId() {
+  return `DOC-${Date.now()}`;
+}
 export async function createRawData(data: {
   originalFileName: string;
   name: string;
   email: string;
   phone: string;
   skills: string[];
-  education: string[];
-  experience: string;
+  education: EducationItem[];
+  experience: ExperienceItem[];
 }) {
   await connectDB();
 
@@ -22,7 +25,7 @@ export async function createRawData(data: {
   const documentId = `DOC-${counter.seq}`;
 
   return RawDataModel.create({
-    documentId,
+    documentId:generateDocId(),
     ...data,
   });
 }
