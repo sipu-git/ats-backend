@@ -1,6 +1,4 @@
-export const lambdaHandler = async () => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ ok: true })
-  };
-};
+import serverless from "serverless-http";
+import app from './app'
+
+export const lambdaHandler = serverless(app);
