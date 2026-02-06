@@ -25,22 +25,21 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run: |
-          bun install
+        run: bun install
 
-      # THIS IS THE FIX
-      - name: Build Lambda bundle (FULLY BUNDLED)
+      - name: Build Lambda bundle (TypeScript)
         run: |
-          bun build index.mjs \
+          bun build src/handler.ts \
             --target=node \
             --bundle \
             --minify \
             --external:aws-sdk \
-            --outfile=dist/index.mjs
+            --outfile=dist/index.js
 
       - name: Zip Lambda package
         run: |
-          zip -r function.zip dist
+          cd dist
+          zip -r ../function.zip .
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
