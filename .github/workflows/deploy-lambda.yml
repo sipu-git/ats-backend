@@ -35,6 +35,7 @@ jobs:
             --target=node \
             --bundle \
             --minify \
+            --external:aws-sdk \
             --outfile=dist/index.mjs
 
       - name: Zip Lambda package
