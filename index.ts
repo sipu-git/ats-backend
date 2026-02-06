@@ -13,7 +13,7 @@ app.use(express.json())
 
 app.use(
   cors({
-    origin: ["http://localhost:8080", "http://localhost:5000", "http://localhost:3000", "http://localhost:5173"],
+    origin: ["http://localhost:8080", "http://localhost:5000", "http://localhost:3000", "http://localhost:5173","https://kd0l6rn9d9.execute-api.ap-south-1.amazonaws.com/default/ats-scoring-lambda-deploy"],
     credentials: true,
     methods: ["POST", "GET", "PUT", "DELETE"]
   })
