@@ -26,15 +26,11 @@ app.get("/health", (_, res) => {
 });
 
 let dbConnected = false;
-async function initDB() {
-  if (!dbConnected) {
-    await connectDB();
-    dbConnected = true;
+export const handler = serverless(app, {
+  request: async () => {
+    if (!dbConnected) {
+      await connectDB();
+      dbConnected = true;
+    }
   }
-}
-
-export const handler = async (event, context) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-  await initDB();
-  return serverless(app)(event, context);
-};
+});
