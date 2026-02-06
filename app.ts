@@ -35,9 +35,10 @@ let isConnected = false;
 
 export const initApp = async () => {
   if (!isConnected) {
+    console.log("⏳ Connecting to DB...");
     await connectDB();
     isConnected = true;
-    console.log("DB connected (Lambda cold start)");
+    console.log("✅ DB connected (Lambda cold start)");
   }
 };
 
