@@ -10,29 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Optional but clean
+      # (Optional but clean) Match Lambda runtime
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
 
+      # Setup Bun
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: Install server dependencies
+      # install dependencies (ROOT)
+      - name: Install dependencies
         run: |
-          cd server
           bun install --production
 
+      # Zip Lambda package (ROOT-based)
       - name: Zip Lambda package
         run: |
-          zip -r function.zip server
+          zip -r function.zip \
+            index.mjs \
+            package.json \
+            node_modules \
+            configs controllers lib models routes services
 
+      # Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -40,6 +48,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # Deploy to Lambda
       - name: Deploy to AWS Lambda
         run: |
           aws lambda update-function-code \
